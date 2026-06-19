@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fixx — דמו</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <section id="s1" class="screen active">
+        <h1>הסוכן שמנהל את החשבונות בשבילך</h1>
+        <p class="sub">דמו — מעבר לשאלון הקטגוריות</p>
+        <button type="button" id="go-s2" class="btn-primary">בואו נתחיל</button>
+      </section>
+
+      <section id="s2" class="screen">
+        <h1>ספר לנו על החבילות שלך</h1>
+        <p class="sub">בחר קטגוריה ← בחר טווח מחיר</p>
+
+        <p class="sub" style="margin-bottom: 12px">שלב 1 — בחר את הקטגוריות שלך</p>
+        <div id="categories-grid" class="categories-grid"></div>
+
+        <div id="priceRanges" style="display: none">
+          <div id="rangeCards"></div>
+        </div>
+
+        <div class="s2-actions">
+          <button type="button" id="start-agent" class="btn-primary">הסוכן מתחיל לעבוד</button>
+          <button type="button" id="skip-questionnaire" class="btn-secondary">דלג, אשלים אחר כך</button>
+        </div>
+      </section>
+
+      <section id="s3" class="screen screen-with-nav">
+        <h1>הסוכן סורק את השוק</h1>
+        <p class="sub">מחפש הצעות טובות יותר עבורך…</p>
+        <div class="agent-spinner" aria-hidden="true"></div>
+        <p class="sub" style="text-align: center">זה לוקח כמה שניות</p>
+      </section>
+
+      <section id="s4" class="screen">
+        <h1>מו״מ פעיל</h1>
+        <p class="sub">פרטנר · סלולר</p>
+
+        <div class="glass-card provider-card">
+          <p class="price-range-title">📱 פרטנר</p>
+          <p class="sub" style="margin: 8px 0 0">חבילה נוכחית · <strong id="s4-current-price">₪189</strong>/חודש</p>
+          <p id="s4-status" class="sub" style="margin: 8px 0 0; color: var(--teal)">● מו״מ פעיל</p>
+        </div>
+
+        <div id="s4-retention-result" class="glass-card" style="display: none; margin-top: 12px; border-color: rgba(0,194,168,0.35)">
+          <p class="price-range-title" style="color: var(--teal)">תוצאת שיחת השימור</p>
+          <p id="s4-retention-result-text" class="sub" style="margin: 8px 0 0"></p>
+        </div>
+
+        <div id="s4-competitive-result" class="glass-card negotiation-outcome-card" hidden>
+          <p class="price-range-title">✓ המחיר שלך תחרותי</p>
+          <p class="sub" style="margin: 8px 0 0">
+            הסוכן פנה לספק ובדק את השוק — לא נמצאה הצעה טובה יותר, או שהספק לא הגיב. המחיר הנוכחי שלך כבר במסגרת התחרותית.
+          </p>
+          <p id="s4-recheck-date" class="outcome-recheck"></p>
+        </div>
+
+        <button type="button" id="open-live-assist" class="glass-card retention-call-btn">
+          <span class="retention-call-icon">📞</span>
+          <span class="retention-call-copy">
+            <strong>שיחת שימור נכנסת</strong>
+            <small>מחלקת השימור של פרטנר — Live Assist</small>
+          </span>
+          <span class="retention-call-chevron">‹</span>
+        </button>
+
+        <button type="button" id="go-offers" class="btn-primary">ראה הצעות שהסוכן מצא</button>
+        <button type="button" id="s4-mark-competitive" class="btn-secondary">הסוכן סיים — המחיר תחרותי</button>
+      </section>
+
+      <section id="s9" class="screen">
+        <h1>הצעות שהסוכן מצא</h1>
+        <p class="sub">בחר את ההצעה המתאימה לך</p>
+        <div id="offers-list"></div>
+        <button type="button" id="go-s5" class="btn-primary" disabled>המשך לאישור</button>
+        <button type="button" id="back-s4" class="btn-secondary">חזרה למו״מ</button>
+      </section>
+
+      <section id="s5" class="screen">
+        <h1>אישור הבחירה</h1>
+        <p class="sub">ודא שהפרטים נכונים לפני שהסוכן ממשיך</p>
+        <div id="confirm-summary" class="glass-card"></div>
+        <button type="button" id="confirm-choice" class="btn-primary">אשר את הבחירה שלי</button>
+      </section>
+
+      <section id="s8" class="screen">
+        <h1>השלמת ההרשמה</h1>
+        <p class="sub" id="s8-sub">מעבר לספק חדש</p>
+
+        <div class="glass-card switch-steps">
+          <p class="price-range-title">כמעט סיימנו — השלב הבא אצל <span id="s8-provider"></span></p>
+          <p class="sub" style="margin-top: 8px">ההצעה אושרה. השלם את ההרשמה אצל הספק החדש כדי שהחיסכון ייכנס לתוקף.</p>
+          <ol id="s8-steps" class="numbered-steps"></ol>
+        </div>
+
+        <a id="s8-register-cta" class="btn-primary btn-link" href="#" target="_blank" rel="noopener noreferrer">
+          עבור להרשמה
+        </a>
+        <button type="button" id="registration-done" class="btn-outline-teal">סיימתי את ההרשמה ✓</button>
+      </section>
+
+      <section id="s7" class="screen success-screen">
+        <div class="success-hero">
+          <div id="confetti-layer" class="confetti-layer" aria-hidden="true"></div>
+          <div class="success-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
+          </div>
+        </div>
+
+        <h1 style="font-size: 1.35rem">כל הכבוד! 🎉</h1>
+        <p class="sub" style="margin-bottom: 16px">ההצעה אושרה והחיסכון נרשם</p>
+
+        <div class="glass-card price-compare">
+          <div class="price-compare-col">
+            <p class="price-compare-label">לפני</p>
+            <p id="s7-before" class="price-compare-value before">₪0</p>
+          </div>
+          <div class="price-compare-arrow">←</div>
+          <div class="price-compare-col">
+            <p class="price-compare-label">אחרי</p>
+            <p id="s7-after" class="price-compare-value after">₪0</p>
+          </div>
+        </div>
+
+        <div class="success-savings-block">
+          <p class="savings-label">חיסכון שנתי כולל</p>
+          <p id="s7-savings" class="savings-amount">₪0</p>
+        </div>
+
+        <div id="s7-discovery"></div>
+
+        <button type="button" id="share-whatsapp" class="btn-whatsapp">שתף בוואטסאפ</button>
+        <button type="button" id="go-s6" class="btn-secondary">המשך ללוח הבקרה</button>
+      </section>
+
+      <section id="s6" class="screen screen-with-nav">
+        <div class="dashboard-header">
+          <div>
+            <p class="sub" style="margin: 0">שלום 👋</p>
+            <h1 style="margin-top: 4px">לוח הבקרה</h1>
+          </div>
+        </div>
+
+        <div id="s6-empty" class="glass-card dashboard-empty" hidden>
+          <p class="dashboard-empty-icon" aria-hidden="true">📋</p>
+          <p class="price-range-title">עדיין לא הוספת חבילות</p>
+          <p class="sub" style="margin: 8px 0 0; text-align: center">
+            כדי שהסוכן יוכל לחפש חיסכון, צריך להשלים את השאלון הקצר — זה לוקח דקה.
+          </p>
+          <button type="button" id="s6-complete-questionnaire" class="btn-primary" style="margin-top: 16px">השלם את השאלון</button>
+        </div>
+
+        <div id="s6-main">
+          <div class="glass-card dashboard-savings">
+            <p class="savings-label">סה״כ חיסכון שנתי</p>
+            <p id="dashboard-savings" class="savings-amount">₪0</p>
+          </div>
+
+          <div id="dashboard-providers" class="provider-card">
+            <p class="price-range-title">הספקים שלך</p>
+            <p id="dashboard-provider-line" class="sub" style="margin: 0"></p>
+          </div>
+
+          <div id="s6-discovery"></div>
+        </div>
+      </section>
+
+      <section id="s-notifications" class="screen screen-with-nav">
+        <h1>התראות</h1>
+        <p class="sub">עדכונים מהסוכן שלך</p>
+        <div id="notifications-list" class="notifications-list"></div>
+      </section>
+
+      <section id="s-profile" class="screen screen-with-nav">
+        <h1>פרופיל אישי</h1>
+        <p class="sub">הגדרות וחשבון</p>
+
+        <div class="glass-card profile-hero">
+          <div class="profile-avatar">ד</div>
+          <p class="profile-name">דמו Fixx</p>
+          <p class="profile-email">test@fixx.ai</p>
+        </div>
+
+        <div class="glass-card profile-section">
+          <p class="price-range-title">פרטים אישיים</p>
+          <label class="profile-field">
+            <span>שם מלא</span>
+            <input id="profile-name-input" type="text" value="דמו Fixx" />
+          </label>
+          <label class="profile-field">
+            <span>עיר</span>
+            <input id="profile-city-input" type="text" value="תל אביב" />
+          </label>
+        </div>
+
+        <div class="glass-card profile-section">
+          <p class="price-range-title">מיקום</p>
+          <div class="profile-toggle-row">
+            <div>
+              <p class="profile-toggle-label">שיתוף מיקום לאזור</p>
+              <p id="profile-location-hint" class="profile-toggle-hint">מאפשר הצעות רלוונטיות באזורך</p>
+            </div>
+            <button type="button" id="profile-location-toggle" class="toggle-switch" aria-pressed="false" aria-label="שיתוף מיקום"></button>
+          </div>
+        </div>
+
+        <div class="glass-card profile-section">
+          <p class="price-range-title">העדפות התראות</p>
+          <div class="profile-toggle-row">
+            <span class="profile-toggle-label">תוקף הטבה (14 יום)</span>
+            <button type="button" class="toggle-switch notif-pref" data-pref="expiry" aria-pressed="true"></button>
+          </div>
+          <div class="profile-toggle-row">
+            <span class="profile-toggle-label">עדכוני מו״מ</span>
+            <button type="button" class="toggle-switch notif-pref" data-pref="negotiation" aria-pressed="true"></button>
+          </div>
+          <div class="profile-toggle-row">
+            <span class="profile-toggle-label">סריקה חצי-שנתית</span>
+            <button type="button" class="toggle-switch notif-pref" data-pref="scan" aria-pressed="true"></button>
+          </div>
+          <div class="profile-toggle-row">
+            <span class="profile-toggle-label">שיחות שימור</span>
+            <button type="button" class="toggle-switch notif-pref" data-pref="retention" aria-pressed="true"></button>
+          </div>
+        </div>
+
+        <div class="glass-card profile-section">
+          <p class="price-range-title">קטגוריות מחוברות</p>
+          <div id="profile-categories" class="profile-tags"></div>
+        </div>
+
+        <div class="glass-card profile-section">
+          <p class="price-range-title">הפנה חבר</p>
+          <p class="sub" style="margin-top: 8px">שתף את הקוד — שניכם מקבלים בונוס</p>
+          <div class="referral-box">
+            <code id="referral-code">FIXX-DEMO26</code>
+            <button type="button" id="copy-referral" class="btn-outline-teal" style="margin: 0; min-height: 40px; width: auto; padding: 0 14px">העתק</button>
+          </div>
+          <button type="button" id="share-referral" class="btn-secondary" style="margin-top: 10px">שתף קישור הפניה</button>
+        </div>
+      </section>
+    </div>
+
+    <nav id="bottom-nav" class="bottom-nav" hidden aria-label="ניווט ראשי">
+      <button type="button" class="bottom-nav-item" data-target="s6" onclick="goTo('s6')">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>ראשי</span>
+      </button>
+      <button type="button" class="bottom-nav-item" data-target="s4" onclick="goTo('s4')">
+        <span class="bottom-nav-icon">🤝</span>
+        <span>מו״מ</span>
+      </button>
+      <button type="button" class="bottom-nav-item" data-target="s-notifications" onclick="goTo('s-notifications')">
+        <span class="bottom-nav-icon">🔔</span>
+        <span>התראות</span>
+      </button>
+      <button type="button" class="bottom-nav-item" data-target="s-profile" onclick="goTo('s-profile')">
+        <span class="bottom-nav-icon">👤</span>
+        <span>פרופיל</span>
+      </button>
+    </nav>
+
+    <div id="location-sheet" class="sheet-overlay" hidden>
+      <div class="sheet-panel">
+        <p class="sheet-title">📍 אפשר מיקום לאזור?</p>
+        <p class="sub">Fixx משתמש במיקום כדי להציע חוגים, כושר ואבטחה רלוונטיים באזורך — בלי לשתף את המיקום המדויק.</p>
+        <button type="button" id="location-allow" class="btn-primary" style="margin-top: 16px">אשר מיקום</button>
+        <button type="button" id="location-deny" class="btn-secondary">לא עכשיו</button>
+        <p class="sheet-footnote">אפשר לשנות בכל עת בפרופיל</p>
+      </div>
+    </div>
+
+    <div id="live-assist" class="live-assist-overlay" hidden>
+      <div class="live-assist-panel">
+        <header class="live-assist-header">
+          <button type="button" id="close-live-assist" class="live-assist-close" aria-label="סגור">✕</button>
+          <p>Live Assist · שיחת שימור</p>
+          <span class="live-assist-spacer"></span>
+        </header>
+
+        <div id="live-assist-script-view">
+          <div class="live-assist-body">
+            <p id="live-assist-label" class="live-assist-label">משפט פתיחה</p>
+            <p id="live-assist-text" class="live-assist-script"></p>
+            <p class="live-assist-tip">📞 קרא את המשפט בקול — הסוכן יעדכן לפי תגובת הנציג</p>
+          </div>
+          <div class="live-assist-actions">
+            <button type="button" class="live-assist-branch-btn" data-branch="discount">הציעו הנחה</button>
+            <button type="button" class="live-assist-branch-btn" data-branch="refuse">סירבו</button>
+            <button type="button" class="live-assist-branch-btn" data-branch="counter">הציעו הצעת נגד</button>
+            <button type="button" id="live-assist-finish" class="live-assist-done-btn">סיימתי את השיחה</button>
+          </div>
+        </div>
+
+        <div id="live-assist-outcome-view" hidden>
+          <div class="live-assist-outcome">
+            <p class="live-assist-outcome-title">מה הוחלט בסוף?</p>
+            <p class="sub" style="text-align: center">Fixx לא מבצעת שיחות — זה סיכום של מה שסוכם עם מחלקת השימור</p>
+            <button type="button" id="live-assist-stayed" class="live-assist-branch-btn" style="margin-top: 20px">נשארתי עם הספק</button>
+            <button type="button" id="live-assist-switch" class="live-assist-done-btn">אני עדיין רוצה לעבור</button>
+            <p id="live-assist-recorded-amount" class="live-assist-recorded" hidden></p>
+            <button type="button" id="live-assist-back-script" class="live-assist-back-link">חזרה לתסריט</button>
+          </div>
+        </div>
+
+        <div id="live-assist-amount-view" class="live-assist-amount-view" hidden>
+          <p class="live-assist-outcome-title">כמה הציעו בפועל?</p>
+          <p class="sub" style="text-align: center">לפני שממשיכים — תעד את הסכום שהנציג הציע</p>
+          <div class="glass-card live-assist-amount-card">
+            <label for="live-assist-branch-amount" class="live-assist-amount-label">סכום חודשי (₪)</label>
+            <input id="live-assist-branch-amount" type="number" inputmode="numeric" dir="ltr" placeholder="₪___" class="live-assist-input" />
+            <button type="button" id="live-assist-amount-continue" class="btn-primary" style="margin-top: 12px">המשך לתגובה הבאה</button>
+          </div>
+          <button type="button" id="live-assist-amount-back" class="live-assist-back-link">חזרה לתסריט</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

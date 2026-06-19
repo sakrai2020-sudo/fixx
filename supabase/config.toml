@@ -1,0 +1,15 @@
+project_id = "ibwjydkpjsbkhxlflwpl"
+
+# Local/dev OAuth — mirror these in Supabase Dashboard → Authentication → URL Configuration:
+#   Site URL: http://localhost:8080
+#   Redirect URLs: http://localhost:8080/auth/callback
+[auth]
+site_url = "http://localhost:8080"
+additional_redirect_urls = [
+  "http://localhost:8080",
+  "http://localhost:8080/auth/callback",
+  "http://localhost:8080/**",
+]
+
+[auth.external.google]
+enabled = true

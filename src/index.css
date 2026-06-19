@@ -1,0 +1,10 @@
+html,
+body {
+  max-width: 390px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100dvh;
+  background: #0B1628;
+  color: #ffffff;
+}
