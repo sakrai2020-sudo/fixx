@@ -1,6 +1,4 @@
 {
   "buildCommand": "bun run build",
-  "outputDirectory": "dist",
-  "framework": "other",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "outputDirectory": "dist/public"
 }
