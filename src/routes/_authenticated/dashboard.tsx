@@ -10,7 +10,14 @@ import { getLocalProviderStore } from "@/lib/local-providers";
 import { getLocalTotalSavings } from "@/lib/local-negotiations";
 import { formatCurrency, formatGreeting } from "@/lib/format";
 import { peekRecentSaving, clearRecentSaving } from "@/lib/recent-saving";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import {
+  daysSinceLastScan,
+  fetchAgentActivities,
+  formatLastScanLabel,
+  runLocalProactiveCheck,
+} from "@/lib/proactive-agent";
+import { getAuthUserOrLocal } from "@/lib/auth-session";
+import { ChevronLeft, Loader2, Bot } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
@@ -24,6 +31,7 @@ function Dashboard() {
   const [activeNegs, setActiveNegs] = useState<any[]>([]);
   const [sheetProvider, setSheetProvider] = useState<any | null>(null);
   const [shareAmount, setShareAmount] = useState<number | null>(null);
+  const [lastScanLabel, setLastScanLabel] = useState<string>("הסוכן בודק ברקע…");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,6 +53,12 @@ function Dashboard() {
         });
         setTotalSavings(getLocalTotalSavings());
         setActiveNegs([]);
+        if (localUser && store.providers.length > 0) {
+          const { activities } = runLocalProactiveCheck(localUser.id, store.providers);
+          setLastScanLabel(formatLastScanLabel(daysSinceLastScan(activities)));
+        } else {
+          setLastScanLabel(formatLastScanLabel(null));
+        }
         setLoading(false);
         if (!store.onboardingComplete && store.providers.length === 0 && store.draft.selected.length === 0) {
           return;
@@ -84,6 +98,13 @@ function Dashboard() {
       if (prof && !prof.onboarding_complete && (ups?.length ?? 0) > 0 && !skipped) {
         navigate({ to: "/onboarding", replace: true });
       }
+      const authUser = await getAuthUserOrLocal();
+      try {
+        const activities = await fetchAgentActivities(authUser.id, "supabase");
+        setLastScanLabel(formatLastScanLabel(daysSinceLastScan(activities)));
+      } catch {
+        setLastScanLabel(formatLastScanLabel(null));
+      }
       setLoading(false);
     })();
   }, [navigate]);
@@ -105,7 +126,10 @@ function Dashboard() {
   return (
     <AppShell>
       <h1 className="text-xl font-bold mt-2">{greeting}</h1>
-      <p className="text-sm text-muted-foreground">הסוכן שלך פעיל</p>
+      <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+        <Bot className="size-4 shrink-0" style={{ color: "var(--teal)" }} />
+        <span>{lastScanLabel}</span>
+      </div>
 
       {showQuestionnaireEmpty ? (
         <div className="mt-5 glass-card p-6 text-center">
@@ -116,21 +140,21 @@ function Dashboard() {
           </p>
           <Link
             to="/onboarding"
-            className="inline-flex mt-4 rounded-[20px] bg-primary text-primary-foreground font-bold py-3 px-6 teal-glow"
+            className="inline-flex mt-4 rounded-xl btn-cta font-bold py-3 px-6 cta-glow"
           >
             השלם את השאלון
           </Link>
         </div>
       ) : (
         <>
-      <div className="mt-5 relative rounded-2xl p-[1px]" style={{ background: "linear-gradient(135deg, #00C2A8, transparent)" }}>
-        <div className="rounded-2xl bg-secondary p-5">
+      <div className="mt-5 relative rounded-xl p-[1px]" style={{ background: "linear-gradient(135deg, var(--teal), transparent)" }}>
+        <div className="rounded-xl glass-card p-5" style={{ background: "rgba(17, 30, 53, 0.8)" }}>
           <p className="text-xs text-muted-foreground">חסכת עד היום</p>
           <div className="mt-1 flex items-end justify-between">
-            <p className="text-3xl font-bold" style={{ color: "var(--primary)" }}>{formatCurrency(totalSavings)}</p>
+            <p className="text-3xl font-bold" style={{ color: "var(--savings)" }}>{formatCurrency(totalSavings)}</p>
             <span
               className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-semibold"
-              style={{ background: "rgba(0,194,168,0.15)", color: "var(--primary)" }}
+              style={{ background: "rgba(0,194,168,0.15)", color: "var(--teal)" }}
             >
               פעיל ✓
             </span>
@@ -192,8 +216,8 @@ function Dashboard() {
                 <p className="text-[12px] text-muted-foreground truncate">{p.plan_name || p.category}</p>
                 <button
                   onClick={() => setSheetProvider(p)}
-                  className="mt-2 inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-semibold text-primary-foreground"
-                  style={{ background: "var(--primary)" }}
+                  className="mt-2 inline-flex items-center rounded-full px-3 py-1.5 text-[12px] font-semibold text-white btn-cta"
+                  style={{ minHeight: "auto" }}
                 >
                   טפל עכשיו ←
                 </button>
@@ -236,7 +260,7 @@ function Dashboard() {
 }
 
 function scoreColor(s: number) {
-  if (s >= 7) return "var(--primary)";
-  if (s >= 4) return "var(--warning)";
+  if (s >= 7) return "var(--savings)";
+  if (s >= 4) return "var(--cta)";
   return "var(--muted-foreground)";
 }

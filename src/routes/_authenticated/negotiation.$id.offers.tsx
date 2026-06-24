@@ -431,7 +431,7 @@ function Offers() {
       {bestCalc && (
         <div className="mt-4 glass-card p-4 text-center" style={{ borderColor: "rgba(0,194,168,0.4)", background: "rgba(0,194,168,0.06)" }}>
           <p className="text-xs text-muted-foreground">חיסכון שנתי נטו (מקסימלי)</p>
-          <p className="text-2xl font-bold mt-1" style={{ color: "var(--primary)" }}>
+          <p className="text-2xl font-bold mt-1" style={{ color: "var(--savings)" }}>
             ₪{Math.round(bestCalc.net).toLocaleString("he-IL")}
           </p>
           {bestCalc.verdict === "skip" && (
@@ -446,16 +446,16 @@ function Offers() {
         {offers.map((o) => {
           const calc = compute(Number(o.monthly_price), Number(o.registration_fee || 0));
           const isSel = selected === o.id;
-          const isRec = calc.verdict === "recommend";
+          const isRecommended = o.offer_type === "value" || calc.verdict === "recommend";
           return (
             <button key={o.id} onClick={() => setSelected(o.id)} className="glass-card p-4 text-right relative"
-              style={isSel ? { borderColor: "var(--primary)", boxShadow: "0 0 0 1px var(--primary)" } : undefined}>
-              {isRec && (
-                <span className="absolute -top-2 right-4 rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}>מומלץ</span>
+              style={isRecommended ? { borderColor: "var(--cta)", borderWidth: 2, boxShadow: "0 0 0 1px var(--cta)" } : isSel ? { borderColor: "var(--teal)", boxShadow: "0 0 0 1px var(--teal)" } : undefined}>
+              {isRecommended && (
+                <span className="absolute -top-2 right-4 rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: "var(--cta)", color: "#FFFFFF" }}>הכי משתלמת</span>
               )}
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-[11px] uppercase tracking-wider" style={{ color: "var(--primary)" }}>{label(o.offer_type)}</p>
+                  <p className="text-[11px] uppercase tracking-wider" style={{ color: "var(--teal)" }}>{label(o.offer_type)}</p>
                   <p className="mt-0.5 font-bold">{o.plan_name}</p>
                 </div>
                 <div className="text-left">
@@ -466,7 +466,7 @@ function Offers() {
               <ul className="mt-3 space-y-1">
                 {(Array.isArray(o.features) ? o.features : []).map((f: string, i: number) => (
                   <li key={i} className="text-[13px] text-muted-foreground flex items-center gap-2">
-                    <span className="size-1.5 rounded-full" style={{ background: "var(--primary)" }} />{f}
+                    <span className="size-1.5 rounded-full" style={{ background: "var(--teal)" }} />{f}
                   </li>
                 ))}
               </ul>
@@ -481,7 +481,7 @@ function Offers() {
               </div>
 
               {calc.verdict === "recommend" && calc.payback > 0 && (
-                <p className="mt-2 text-[12px] font-semibold" style={{ color: "var(--primary)" }}>
+                <p className="mt-2 text-[12px] font-semibold" style={{ color: "var(--savings)" }}>
                   ✓ החזר השקעה תוך {calc.payback} חודשים · חיסכון נטו ₪{Math.round(calc.net).toLocaleString("he-IL")}/שנה
                 </p>
               )}
@@ -498,7 +498,7 @@ function Offers() {
               )}
 
               {isSel && (
-                <div className="absolute top-3 left-3 size-6 rounded-full flex items-center justify-center" style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}>
+                <div className="absolute top-3 left-3 size-6 rounded-full flex items-center justify-center" style={{ background: "var(--teal)", color: "#FFFFFF" }}>
                   <Check className="size-3.5" />
                 </div>
               )}
@@ -507,7 +507,7 @@ function Offers() {
         })}
       </div>
 
-      <button disabled={!selected || busy} onClick={confirm} className="mt-6 w-full rounded-[20px] bg-primary text-primary-foreground font-bold py-4 disabled:opacity-40 teal-glow">
+      <button disabled={!selected || busy} onClick={confirm} className="mt-6 w-full rounded-xl btn-cta font-bold py-4 disabled:opacity-40 cta-glow">
         אשר את ההצעה הנבחרת
       </button>
       <p className="mt-2 text-center text-[11px] text-muted-foreground">המעבר לספק יבוצע רק לאחר אישור מפורש שלך</p>

@@ -7,8 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchPendingConfirmations } from "@/lib/action-confirmation.service";
 import { listPendingActionConfirmations } from "@/lib/post-action-confirmation.functions";
 import type { ActionConfirmation } from "@/lib/post-action-confirmation";
-import { Bell, Handshake, Check, Phone, ShieldCheck } from "lucide-react";
+import { Bell, Handshake, Check, Phone, ShieldCheck, Bot, AlertTriangle, Tag } from "lucide-react";
 import { getAuthUserOrLocal } from "@/lib/auth-session";
+import { fetchAgentActivities } from "@/lib/proactive-agent";
 
 export const Route = createFileRoute("/_authenticated/notifications")({
   component: Notifications,
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/notifications")({
 type Item = {
   id: string;
   ts: string;
-  icon: "start" | "completed" | "retention" | "protocol";
+  icon: "start" | "completed" | "retention" | "protocol" | "agent" | "expiry" | "promo";
   title: string;
   body: string;
   negId?: string;
@@ -57,6 +58,28 @@ function Notifications() {
       }));
 
       if (user.source !== "local") {
+        const agentActs = await fetchAgentActivities(user.id, "supabase");
+        for (const a of agentActs) {
+          if (a.activity_type === "scheduled_scan") continue;
+          list.push({
+            id: `agent-${a.id}`,
+            ts: a.created_at,
+            icon:
+              a.activity_type === "expiry_alert"
+                ? "expiry"
+                : a.activity_type === "promotion_alert"
+                  ? "promo"
+                  : "agent",
+            title:
+              a.activity_type === "expiry_alert"
+                ? "הסכם עומד לפוג"
+                : a.activity_type === "promotion_alert"
+                  ? "מבצע רלוונטי"
+                  : "הצעה טובה יותר",
+            body: a.summary,
+          });
+        }
+
         const { data: negs } = await supabase
           .from("negotiations")
           .select("id, status, started_at, retention_call_status, user_providers(provider_name)")
@@ -93,6 +116,28 @@ function Notifications() {
               negId: n.id,
             });
           }
+        }
+      } else {
+        const agentActs = await fetchAgentActivities(user.id, "local");
+        for (const a of agentActs) {
+          if (a.activity_type === "scheduled_scan") continue;
+          list.push({
+            id: `agent-${a.id}`,
+            ts: a.created_at,
+            icon:
+              a.activity_type === "expiry_alert"
+                ? "expiry"
+                : a.activity_type === "promotion_alert"
+                  ? "promo"
+                  : "agent",
+            title:
+              a.activity_type === "expiry_alert"
+                ? "הסכם עומד לפוג"
+                : a.activity_type === "promotion_alert"
+                  ? "מבצע רלוונטי"
+                  : "הצעה טובה יותר",
+            body: a.summary,
+          });
         }
       }
 
@@ -168,10 +213,13 @@ function Notifications() {
 
 function NotifIcon({ kind }: { kind: Item["icon"] }) {
   const map = {
-    start: { Icon: Handshake, color: "var(--primary)" },
-    completed: { Icon: Check, color: "var(--primary)" },
-    retention: { Icon: Phone, color: "var(--warning)" },
-    protocol: { Icon: ShieldCheck, color: "var(--primary)" },
+    start: { Icon: Handshake, color: "var(--teal)" },
+    completed: { Icon: Check, color: "var(--savings)" },
+    retention: { Icon: Phone, color: "var(--cta)" },
+    protocol: { Icon: ShieldCheck, color: "var(--teal)" },
+    agent: { Icon: Bot, color: "var(--savings)" },
+    expiry: { Icon: AlertTriangle, color: "var(--cta)" },
+    promo: { Icon: Tag, color: "var(--cta)" },
   } as const;
   const { Icon, color } = map[kind];
   return (

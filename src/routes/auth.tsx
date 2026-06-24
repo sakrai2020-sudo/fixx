@@ -1,8 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LogoOrb } from "@/components/Logo";
+import { MarketingHero } from "@/components/MarketingHero";
 import { useAuth } from "@/lib/auth";
 import { localLogin, LOCAL_TEST_USER } from "@/lib/local-auth";
+import { setLocalAccountType } from "@/lib/account-type";
+import { resolvePostLoginPath } from "@/lib/account-type";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -19,8 +22,21 @@ function Auth() {
 
   useEffect(() => {
     if (loading || !user) return;
-    navigate({ to: "/dashboard", replace: true });
+    (async () => {
+      const path = await resolvePostLoginPath(user.id, "local");
+      navigate({ to: path, replace: true });
+    })();
   }, [loading, user, navigate]);
+
+  const redirectAfterLogin = (business: boolean) => {
+    if (business) {
+      setLocalAccountType("business");
+      window.location.href = "/business-onboarding";
+      return;
+    }
+    setLocalAccountType("personal");
+    window.location.href = "/dashboard";
+  };
 
   const handleLogin = () => {
     if (!email.trim()) {
@@ -33,7 +49,26 @@ function Auth() {
     }
     setBusy(true);
     if (localLogin(email, password)) {
-      window.location.href = "/dashboard";
+      setLocalAccountType("personal");
+      redirectAfterLogin(false);
+    } else {
+      toast.error("אימייל או סיסמה שגויים");
+      setBusy(false);
+    }
+  };
+
+  const handleBusinessEntry = async () => {
+    if (!email.trim()) {
+      toast.error("יש להזין כתובת אימייל");
+      return;
+    }
+    if (!password) {
+      toast.error("יש להזין סיסמה");
+      return;
+    }
+    setBusy(true);
+    if (localLogin(email, password)) {
+      redirectAfterLogin(true);
     } else {
       toast.error("אימייל או סיסמה שגויים");
       setBusy(false);
@@ -43,8 +78,11 @@ function Auth() {
   return (
     <div className="app-screen w-full min-h-screen px-6 py-10 bg-background">
       <div className="flex flex-col justify-center">
-        <div className="flex flex-col items-center text-center mb-10">
+        <div className="flex flex-col items-center text-center mb-8">
           <LogoOrb size={64} />
+          <div className="mt-6 w-full">
+            <MarketingHero />
+          </div>
         </div>
 
         <div className="flex flex-col gap-3 w-full">
@@ -84,6 +122,23 @@ function Auth() {
             ) : (
               "כניסה"
             )}
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center" aria-hidden>
+              <div className="w-full border-t border-border" />
+            </div>
+            <p className="relative text-center text-xs text-muted-foreground bg-background px-3 mx-auto w-fit">או</p>
+          </div>
+
+          <button
+            type="button"
+            disabled={busy}
+            onClick={handleBusinessEntry}
+            className="mobile-full w-full min-h-11 rounded-xl font-bold text-sm border flex items-center justify-center gap-2"
+            style={{ borderColor: "var(--teal)", color: "var(--teal)" }}
+          >
+            כניסה כלקוח עסקי
           </button>
         </div>
       </div>

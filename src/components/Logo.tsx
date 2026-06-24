@@ -1,8 +1,8 @@
-const FIXX_GREEN = "#00C853";
+const FIXX_ORANGE = "#FF6B00";
 const SLOGAN = "הסוכן הפיננסי האוטונומי שלך";
 const FONT_FAMILY = '"Heebo", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
 
-function LogoMark({ size }: { size: number }) {
+function LogoMark({ size, pulseXx = false }: { size: number; pulseXx?: boolean }) {
   return (
     <div
       className="inline-flex items-baseline tracking-tight select-none"
@@ -17,7 +17,12 @@ function LogoMark({ size }: { size: number }) {
       aria-hidden
     >
       <span style={{ color: "#ffffff" }}>Fi</span>
-      <span style={{ color: FIXX_GREEN }}>xx</span>
+      <span
+        className={pulseXx ? "fixx-logo-xx-pulse" : undefined}
+        style={{ color: FIXX_ORANGE }}
+      >
+        xx
+      </span>
     </div>
   );
 }
@@ -52,22 +57,22 @@ export function Logo({ size = 52, showSlogan = true }: { size?: number; showSlog
   );
 }
 
-export function LogoOrb({ size = 52, showSlogan = true }: { size?: number; showSlogan?: boolean }) {
+export function LogoOrb({ size = 52, showSlogan = true, pulseXx = false }: { size?: number; showSlogan?: boolean; pulseXx?: boolean }) {
   return (
     <div className="inline-flex flex-col items-center gap-2">
       <div className="relative inline-flex items-center justify-center">
         <div
           className="absolute inset-0 rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(0,200,83,0.35), transparent 70%)",
-            boxShadow: "0 0 40px rgba(0,200,83,0.25)",
+            background: "radial-gradient(circle, rgba(255,107,0,0.35), transparent 70%)",
+            boxShadow: "0 0 40px rgba(255,107,0,0.25)",
           }}
         />
         <div
           className="relative rounded-full px-8 py-6"
-          style={{ background: "rgba(0,200,83,0.08)", border: "1px solid rgba(0,200,83,0.4)" }}
+          style={{ background: "rgba(255,107,0,0.08)", border: "1px solid rgba(255,107,0,0.4)" }}
         >
-          <LogoMark size={size} />
+          <LogoMark size={size} pulseXx={pulseXx} />
         </div>
       </div>
       {showSlogan && <LogoSlogan logoSize={size} />}

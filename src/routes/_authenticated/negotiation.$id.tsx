@@ -276,8 +276,8 @@ function Negotiation() {
             <p className="font-bold text-lg">{up?.provider_name}</p>
             <p className="text-xs text-muted-foreground">{up?.category}</p>
           </div>
-          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "rgba(0,194,168,0.15)", color: "var(--primary)" }}>
-            <span className="relative inline-flex size-2"><span className="absolute inset-0 rounded-full pulse-ring" style={{ background: "var(--primary)" }} /><span className="relative size-2 rounded-full" style={{ background: "var(--primary)" }} /></span>
+          <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "rgba(0,194,168,0.15)", color: "var(--teal)" }}>
+            <span className="relative inline-flex size-2"><span className="absolute inset-0 rounded-full pulse-ring" style={{ background: "var(--teal)" }} /><span className="relative size-2 rounded-full" style={{ background: "var(--teal)" }} /></span>
             {competitiveOutcome ? "הבדיקה הושלמה" : retentionTriggered ? "מחלקת שימור יצרה קשר" : "מו״מ פעיל"}
           </span>
         </div>
@@ -332,7 +332,7 @@ function Negotiation() {
             כדאי לעבור ל{competitorName} לתקופה קצרה. ספקים רבים מציעים את המחיר הטוב ביותר רק לאחר שהלקוח עוזב בפועל. הסוכן יעקוב ויודיע כשמחלקת השימור תיצור קשר.
           </p>
           <div className="mt-4 flex flex-col gap-2">
-            <button onClick={() => setRecommendation("switch_strategy")} className="w-full rounded-[14px] bg-primary text-primary-foreground font-bold py-3 teal-glow">
+            <button onClick={() => setRecommendation("switch_strategy")} className="w-full rounded-xl btn-cta font-bold py-3 cta-glow">
               התחל תהליך מעבר
             </button>
             <button onClick={() => setRecommendation("direct_negotiation")} className="w-full rounded-[14px] border border-border font-semibold py-3 text-foreground">
@@ -374,7 +374,7 @@ function Negotiation() {
           loadingOverlay.show("הסוכן סורק את השוק הישראלי");
           navigate({ to: "/negotiation/$id/offers", params: { id } });
         }}
-        className="mt-6 w-full rounded-[20px] bg-primary text-primary-foreground font-bold py-4 flex items-center justify-center gap-2 teal-glow"
+        className="mt-6 w-full rounded-xl btn-cta font-bold py-4 flex items-center justify-center gap-2 cta-glow"
       >
         ראה הצעות שהסוכן מצא <ChevronLeft className="size-4" />
       </button>
@@ -453,11 +453,14 @@ function Negotiation() {
 }
 
 function Step({ idx, state, icon, title, subtitle }: { idx: number; state: "done" | "active" | "pending"; icon: React.ReactNode; title: string; subtitle: string }) {
-  const colors = state === "done" ? "var(--primary)" : state === "active" ? "var(--warning)" : "var(--muted-foreground)";
+  const colors = state === "done" ? "var(--teal)" : state === "active" ? "var(--cta)" : "var(--muted-foreground)";
   return (
     <div className="flex gap-3 items-start">
       <div className="flex flex-col items-center">
-        <div className="size-9 rounded-full flex items-center justify-center relative" style={{ background: state === "pending" ? "rgba(255,255,255,0.04)" : `color-mix(in oklab, ${colors} 18%, transparent)`, color: colors, border: `1px solid ${colors}` }}>
+        <div
+          className={`size-9 rounded-full flex items-center justify-center relative ${state === "active" ? "fixx-step-active-blink" : ""}`}
+          style={{ background: state === "pending" ? "rgba(255,255,255,0.04)" : `color-mix(in oklab, ${colors} 18%, transparent)`, color: colors, border: `1px solid ${colors}` }}
+        >
           {state === "active" && <span className="absolute inset-0 rounded-full pulse-ring" style={{ background: colors }} />}
           <span className="relative">{icon}</span>
         </div>

@@ -40,21 +40,25 @@
   --background: #0B1628;
   --foreground: #FFFFFF;
   --surface: #111E35;
-  --card: rgba(255,255,255,0.04);
+  --card: rgba(17, 30, 53, 0.8);
   --card-foreground: #FFFFFF;
   --popover: #111E35;
   --popover-foreground: #FFFFFF;
-  --primary: #00C2A8;
-  --primary-foreground: #0B1628;
-  --secondary: #111E35;
+  --primary: #FF6B00;
+  --primary-foreground: #FFFFFF;
+  --cta: #FF6B00;
+  --cta-dark: #E65A00;
+  --teal: #00C2A8;
+  --savings: #27AE60;
+  --secondary: rgba(17, 30, 53, 0.8);
   --secondary-foreground: #FFFFFF;
   --muted: rgba(255,255,255,0.06);
-  --muted-foreground: #8A9BB5;
+  --muted-foreground: #C0C0C0;
   --accent: #00C2A8;
   --accent-foreground: #0B1628;
   --destructive: #FF5C5C;
   --destructive-foreground: #FFFFFF;
-  --warning: #FFB020;
+  --warning: #FF6B00;
   --danger: #FF5C5C;
   --border: rgba(255,255,255,0.08);
   --input: rgba(255,255,255,0.08);
@@ -219,7 +223,8 @@
   max-width: 390px;
   z-index: 30;
   padding-bottom: env(safe-area-inset-bottom, 0px);
-  background: #111E35;
+  background: rgba(11, 22, 40, 0.8);
+  backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -234,20 +239,32 @@
 }
 
 @utility glass-card {
-  background: var(--card);
+  background: rgba(17, 30, 53, 0.8);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
 }
 
 @utility teal-glow {
   box-shadow: 0 0 24px -6px color-mix(in oklab, #00C2A8 45%, transparent);
 }
 
+@utility cta-glow {
+  box-shadow: 0 0 24px -6px color-mix(in oklab, #FF6B00 45%, transparent);
+}
+
+@utility btn-cta {
+  background: linear-gradient(135deg, #FF6B00, #E65A00);
+  color: #FFFFFF;
+  border-radius: 12px;
+  font-weight: 700;
+  min-height: 48px;
+}
+
 @utility btn-primary {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #FF6B00, #E65A00);
+  color: #FFFFFF;
+  border-radius: 12px;
   font-weight: 700;
   min-height: 48px;
 }
@@ -260,11 +277,12 @@
 }
 
 @utility discovery-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(17, 30, 53, 0.8);
   border: 1px solid rgba(0, 194, 168, 0.18);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 14px 16px;
-  border-right: 3px solid var(--primary);
+  border-right: 3px solid var(--teal);
+  backdrop-filter: blur(20px);
 }
 
 @utility discovery-card-title {
@@ -439,4 +457,26 @@
 
 @keyframes fixxOverlaySpin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes fixxLogoPulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(255, 107, 0, 0.4); }
+  50% { opacity: 0.85; text-shadow: 0 0 18px rgba(255, 107, 0, 0.85); }
+}
+
+@keyframes fixxStepBlink {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.5); }
+  50% { opacity: 0.75; box-shadow: 0 0 12px 2px rgba(255, 107, 0, 0.6); }
+}
+
+.fixx-logo-xx-pulse {
+  animation: fixxLogoPulse 2s ease-in-out infinite;
+}
+
+.fixx-step-active-blink {
+  animation: fixxStepBlink 1.5s ease-in-out infinite;
+}
+
+.pulse-ring {
+  animation: fixxStepBlink 1.5s ease-in-out infinite;
 }

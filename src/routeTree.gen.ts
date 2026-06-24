@@ -25,10 +25,14 @@ import { Route as AuthenticatedFaqRouteImport } from './routes/_authenticated/fa
 import { Route as AuthenticatedDisclosureRouteImport } from './routes/_authenticated/disclosure'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedControlRouteImport } from './routes/_authenticated/control'
+import { Route as AuthenticatedBusinessPaymentProcessingRouteImport } from './routes/_authenticated/business-payment-processing'
+import { Route as AuthenticatedBusinessOnboardingRouteImport } from './routes/_authenticated/business-onboarding'
+import { Route as AuthenticatedBusinessDashboardRouteImport } from './routes/_authenticated/business-dashboard'
 import { Route as AuthenticatedBankGuideRouteImport } from './routes/_authenticated/bank-guide'
 import { Route as AuthenticatedAffiliateRouteImport } from './routes/_authenticated/affiliate'
 import { Route as AuthenticatedAddChargeRouteImport } from './routes/_authenticated/add-charge'
 import { Route as AuthenticatedNegotiationIdRouteImport } from './routes/_authenticated/negotiation.$id'
+import { Route as AuthenticatedConfirmIdRouteImport } from './routes/_authenticated/confirm.$id'
 import { Route as AuthenticatedNegotiationIdOffersRouteImport } from './routes/_authenticated/negotiation.$id.offers'
 
 const AuthRoute = AuthRouteImport.update({
@@ -114,6 +118,24 @@ const AuthenticatedControlRoute = AuthenticatedControlRouteImport.update({
   path: '/control',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBusinessPaymentProcessingRoute =
+  AuthenticatedBusinessPaymentProcessingRouteImport.update({
+    id: '/business-payment-processing',
+    path: '/business-payment-processing',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBusinessOnboardingRoute =
+  AuthenticatedBusinessOnboardingRouteImport.update({
+    id: '/business-onboarding',
+    path: '/business-onboarding',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBusinessDashboardRoute =
+  AuthenticatedBusinessDashboardRouteImport.update({
+    id: '/business-dashboard',
+    path: '/business-dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedBankGuideRoute = AuthenticatedBankGuideRouteImport.update({
   id: '/bank-guide',
   path: '/bank-guide',
@@ -135,6 +157,11 @@ const AuthenticatedNegotiationIdRoute =
     path: '/negotiation/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedConfirmIdRoute = AuthenticatedConfirmIdRouteImport.update({
+  id: '/confirm/$id',
+  path: '/confirm/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedNegotiationIdOffersRoute =
   AuthenticatedNegotiationIdOffersRouteImport.update({
     id: '/offers',
@@ -148,6 +175,9 @@ export interface FileRoutesByFullPath {
   '/add-charge': typeof AuthenticatedAddChargeRoute
   '/affiliate': typeof AuthenticatedAffiliateRoute
   '/bank-guide': typeof AuthenticatedBankGuideRoute
+  '/business-dashboard': typeof AuthenticatedBusinessDashboardRoute
+  '/business-onboarding': typeof AuthenticatedBusinessOnboardingRoute
+  '/business-payment-processing': typeof AuthenticatedBusinessPaymentProcessingRoute
   '/control': typeof AuthenticatedControlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disclosure': typeof AuthenticatedDisclosureRoute
@@ -161,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/providers-list': typeof AuthenticatedProvidersListRoute
   '/terms': typeof AuthenticatedTermsRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/confirm/$id': typeof AuthenticatedConfirmIdRoute
   '/negotiation/$id': typeof AuthenticatedNegotiationIdRouteWithChildren
   '/negotiation/$id/offers': typeof AuthenticatedNegotiationIdOffersRoute
 }
@@ -170,6 +201,9 @@ export interface FileRoutesByTo {
   '/add-charge': typeof AuthenticatedAddChargeRoute
   '/affiliate': typeof AuthenticatedAffiliateRoute
   '/bank-guide': typeof AuthenticatedBankGuideRoute
+  '/business-dashboard': typeof AuthenticatedBusinessDashboardRoute
+  '/business-onboarding': typeof AuthenticatedBusinessOnboardingRoute
+  '/business-payment-processing': typeof AuthenticatedBusinessPaymentProcessingRoute
   '/control': typeof AuthenticatedControlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disclosure': typeof AuthenticatedDisclosureRoute
@@ -183,6 +217,7 @@ export interface FileRoutesByTo {
   '/providers-list': typeof AuthenticatedProvidersListRoute
   '/terms': typeof AuthenticatedTermsRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/confirm/$id': typeof AuthenticatedConfirmIdRoute
   '/negotiation/$id': typeof AuthenticatedNegotiationIdRouteWithChildren
   '/negotiation/$id/offers': typeof AuthenticatedNegotiationIdOffersRoute
 }
@@ -194,6 +229,9 @@ export interface FileRoutesById {
   '/_authenticated/add-charge': typeof AuthenticatedAddChargeRoute
   '/_authenticated/affiliate': typeof AuthenticatedAffiliateRoute
   '/_authenticated/bank-guide': typeof AuthenticatedBankGuideRoute
+  '/_authenticated/business-dashboard': typeof AuthenticatedBusinessDashboardRoute
+  '/_authenticated/business-onboarding': typeof AuthenticatedBusinessOnboardingRoute
+  '/_authenticated/business-payment-processing': typeof AuthenticatedBusinessPaymentProcessingRoute
   '/_authenticated/control': typeof AuthenticatedControlRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/disclosure': typeof AuthenticatedDisclosureRoute
@@ -207,6 +245,7 @@ export interface FileRoutesById {
   '/_authenticated/providers-list': typeof AuthenticatedProvidersListRoute
   '/_authenticated/terms': typeof AuthenticatedTermsRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/_authenticated/confirm/$id': typeof AuthenticatedConfirmIdRoute
   '/_authenticated/negotiation/$id': typeof AuthenticatedNegotiationIdRouteWithChildren
   '/_authenticated/negotiation/$id/offers': typeof AuthenticatedNegotiationIdOffersRoute
 }
@@ -218,6 +257,9 @@ export interface FileRouteTypes {
     | '/add-charge'
     | '/affiliate'
     | '/bank-guide'
+    | '/business-dashboard'
+    | '/business-onboarding'
+    | '/business-payment-processing'
     | '/control'
     | '/dashboard'
     | '/disclosure'
@@ -231,6 +273,7 @@ export interface FileRouteTypes {
     | '/providers-list'
     | '/terms'
     | '/auth/callback'
+    | '/confirm/$id'
     | '/negotiation/$id'
     | '/negotiation/$id/offers'
   fileRoutesByTo: FileRoutesByTo
@@ -240,6 +283,9 @@ export interface FileRouteTypes {
     | '/add-charge'
     | '/affiliate'
     | '/bank-guide'
+    | '/business-dashboard'
+    | '/business-onboarding'
+    | '/business-payment-processing'
     | '/control'
     | '/dashboard'
     | '/disclosure'
@@ -253,6 +299,7 @@ export interface FileRouteTypes {
     | '/providers-list'
     | '/terms'
     | '/auth/callback'
+    | '/confirm/$id'
     | '/negotiation/$id'
     | '/negotiation/$id/offers'
   id:
@@ -263,6 +310,9 @@ export interface FileRouteTypes {
     | '/_authenticated/add-charge'
     | '/_authenticated/affiliate'
     | '/_authenticated/bank-guide'
+    | '/_authenticated/business-dashboard'
+    | '/_authenticated/business-onboarding'
+    | '/_authenticated/business-payment-processing'
     | '/_authenticated/control'
     | '/_authenticated/dashboard'
     | '/_authenticated/disclosure'
@@ -276,6 +326,7 @@ export interface FileRouteTypes {
     | '/_authenticated/providers-list'
     | '/_authenticated/terms'
     | '/auth/callback'
+    | '/_authenticated/confirm/$id'
     | '/_authenticated/negotiation/$id'
     | '/_authenticated/negotiation/$id/offers'
   fileRoutesById: FileRoutesById
@@ -400,6 +451,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedControlRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/business-payment-processing': {
+      id: '/_authenticated/business-payment-processing'
+      path: '/business-payment-processing'
+      fullPath: '/business-payment-processing'
+      preLoaderRoute: typeof AuthenticatedBusinessPaymentProcessingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/business-onboarding': {
+      id: '/_authenticated/business-onboarding'
+      path: '/business-onboarding'
+      fullPath: '/business-onboarding'
+      preLoaderRoute: typeof AuthenticatedBusinessOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/business-dashboard': {
+      id: '/_authenticated/business-dashboard'
+      path: '/business-dashboard'
+      fullPath: '/business-dashboard'
+      preLoaderRoute: typeof AuthenticatedBusinessDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/bank-guide': {
       id: '/_authenticated/bank-guide'
       path: '/bank-guide'
@@ -426,6 +498,13 @@ declare module '@tanstack/react-router' {
       path: '/negotiation/$id'
       fullPath: '/negotiation/$id'
       preLoaderRoute: typeof AuthenticatedNegotiationIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/confirm/$id': {
+      id: '/_authenticated/confirm/$id'
+      path: '/confirm/$id'
+      fullPath: '/confirm/$id'
+      preLoaderRoute: typeof AuthenticatedConfirmIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/negotiation/$id/offers': {
@@ -457,6 +536,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAddChargeRoute: typeof AuthenticatedAddChargeRoute
   AuthenticatedAffiliateRoute: typeof AuthenticatedAffiliateRoute
   AuthenticatedBankGuideRoute: typeof AuthenticatedBankGuideRoute
+  AuthenticatedBusinessDashboardRoute: typeof AuthenticatedBusinessDashboardRoute
+  AuthenticatedBusinessOnboardingRoute: typeof AuthenticatedBusinessOnboardingRoute
+  AuthenticatedBusinessPaymentProcessingRoute: typeof AuthenticatedBusinessPaymentProcessingRoute
   AuthenticatedControlRoute: typeof AuthenticatedControlRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDisclosureRoute: typeof AuthenticatedDisclosureRoute
@@ -469,6 +551,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedProvidersListRoute: typeof AuthenticatedProvidersListRoute
   AuthenticatedTermsRoute: typeof AuthenticatedTermsRoute
+  AuthenticatedConfirmIdRoute: typeof AuthenticatedConfirmIdRoute
   AuthenticatedNegotiationIdRoute: typeof AuthenticatedNegotiationIdRouteWithChildren
 }
 
@@ -476,6 +559,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAddChargeRoute: AuthenticatedAddChargeRoute,
   AuthenticatedAffiliateRoute: AuthenticatedAffiliateRoute,
   AuthenticatedBankGuideRoute: AuthenticatedBankGuideRoute,
+  AuthenticatedBusinessDashboardRoute: AuthenticatedBusinessDashboardRoute,
+  AuthenticatedBusinessOnboardingRoute: AuthenticatedBusinessOnboardingRoute,
+  AuthenticatedBusinessPaymentProcessingRoute:
+    AuthenticatedBusinessPaymentProcessingRoute,
   AuthenticatedControlRoute: AuthenticatedControlRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDisclosureRoute: AuthenticatedDisclosureRoute,
@@ -488,6 +575,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedProvidersListRoute: AuthenticatedProvidersListRoute,
   AuthenticatedTermsRoute: AuthenticatedTermsRoute,
+  AuthenticatedConfirmIdRoute: AuthenticatedConfirmIdRoute,
   AuthenticatedNegotiationIdRoute: AuthenticatedNegotiationIdRouteWithChildren,
 }
 

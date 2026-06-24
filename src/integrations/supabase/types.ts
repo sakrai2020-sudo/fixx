@@ -154,6 +154,7 @@ export type Database = {
       }
       user_profiles: {
         Row: {
+          account_type: string
           biometric_enabled: boolean
           city: string | null
           created_at: string
@@ -163,6 +164,7 @@ export type Database = {
           phone: string | null
         }
         Insert: {
+          account_type?: string
           biometric_enabled?: boolean
           city?: string | null
           created_at?: string
@@ -172,6 +174,7 @@ export type Database = {
           phone?: string | null
         }
         Update: {
+          account_type?: string
           biometric_enabled?: boolean
           city?: string | null
           created_at?: string
@@ -179,6 +182,69 @@ export type Database = {
           name?: string | null
           onboarding_complete?: boolean
           phone?: string | null
+        }
+        Relationships: []
+      }
+      business_profiles: {
+        Row: {
+          id: string
+          user_id: string
+          business_name: string
+          business_type: string
+          employee_count: number | null
+          fixed_expenses: string[]
+          onboarding_complete: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          business_name: string
+          business_type: string
+          employee_count?: number | null
+          fixed_expenses?: string[]
+          onboarding_complete?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          business_name?: string
+          business_type?: string
+          employee_count?: number | null
+          fixed_expenses?: string[]
+          onboarding_complete?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      business_payment_processing: {
+        Row: {
+          id: string
+          user_id: string
+          processor_name: string
+          current_rate: number | null
+          monthly_volume: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          processor_name: string
+          current_rate?: number | null
+          monthly_volume?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          processor_name?: string
+          current_rate?: number | null
+          monthly_volume?: number | null
+          created_at?: string
         }
         Relationships: []
       }

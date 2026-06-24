@@ -9,6 +9,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { MARKETING_META } from "@/lib/marketing-copy";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 import { SplashScreen } from "@/components/SplashScreen";
@@ -46,8 +47,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" },
-      { title: "Fixx — הסוכן הפיננסי שלך" },
-      { name: "description", content: "Fixx מנהל בשבילך מו״מ מול ספקים וחוסך אלפי שקלים בשנה" },
+      { title: "Fixx — הסוכן הפיננסי האוטונומי שלך" },
+      { name: "description", content: MARKETING_META },
       { name: "theme-color", content: "#0B1628" },
     ],
     links: [

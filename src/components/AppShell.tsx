@@ -65,7 +65,7 @@ export function AppShell({ children, showBottomNav = true }: { children: ReactNo
                   to={it.to}
                   data-inline="true"
                   className="btn-inline flex flex-col items-center gap-1 py-3 min-h-[56px] justify-center"
-                  style={{ color: active ? "var(--primary)" : "var(--muted-foreground)" }}
+                  style={{ color: active ? "var(--teal)" : "#C0C0C0" }}
                 >
                   <Icon className="size-5" />
                   <span className="text-sm">{it.label}</span>
