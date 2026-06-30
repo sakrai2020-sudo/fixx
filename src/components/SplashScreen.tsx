@@ -18,7 +18,7 @@ export function SplashScreen() {
     };
 
     const maxTimer = window.setTimeout(hide, MAX_VISIBLE_MS);
-    waitForAuthSession(MAX_VISIBLE_MS).finally(() => {
+    waitForAuthSession().finally(() => {
       window.clearTimeout(maxTimer);
       hide();
     });

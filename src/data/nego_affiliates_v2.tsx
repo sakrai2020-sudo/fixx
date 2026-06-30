@@ -1,4 +1,4 @@
-import type { ProviderListStatus } from "@/lib/providers-list-types";
+import type { ProviderListStatus } from "@/lib/providers-list";
 
 export type FixxAffiliateRow = {
   id: number;

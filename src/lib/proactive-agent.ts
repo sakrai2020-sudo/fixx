@@ -10,7 +10,7 @@ export type AgentActivity = {
   activity_type: AgentActivityType;
   user_provider_id?: string | null;
   summary: string;
-  details: Record<string, unknown>;
+  details: Record<string, string | number | boolean | null>;
   created_at: string;
 };
 

@@ -16,8 +16,8 @@ export const Route = createFileRoute("/auth")({
 function Auth() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
-  const [email, setEmail] = useState(LOCAL_TEST_USER.email);
-  const [password, setPassword] = useState(LOCAL_TEST_USER.password);
+  const [email, setEmail] = useState<string>(LOCAL_TEST_USER.email);
+  const [password, setPassword] = useState<string>(LOCAL_TEST_USER.password);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {

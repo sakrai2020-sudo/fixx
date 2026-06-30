@@ -52,7 +52,7 @@ function AuthenticatedLayout() {
           }
           return;
         }
-        const result = await runAgentCheck();
+        const result = await runAgentCheck() as { ran: boolean; newItems: { activity_type: string; summary: string }[] };
         if (result.ran && result.newItems.length > 0) {
           for (const item of result.newItems) {
             if (item.activity_type === "expiry_alert") {

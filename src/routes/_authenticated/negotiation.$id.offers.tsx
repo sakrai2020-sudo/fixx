@@ -171,7 +171,7 @@ function Offers() {
     setSelected(switchOffer.id);
     const calc = compute(Number(switchOffer.monthly_price), Number(switchOffer.registration_fee || 0));
     finishWithSavings(calc.net, switchOffer);
-    navigate({ to: "/negotiation/$id/offers", params: { id }, search: {}, replace: true });
+    navigate({ to: "/negotiation/$id/offers", params: { id }, search: { handoff: undefined }, replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handoff, up, offers, id]);
 

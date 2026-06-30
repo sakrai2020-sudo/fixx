@@ -372,7 +372,7 @@ function Negotiation() {
         type="button"
         onClick={() => {
           loadingOverlay.show("הסוכן סורק את השוק הישראלי");
-          navigate({ to: "/negotiation/$id/offers", params: { id } });
+          navigate({ to: "/negotiation/$id/offers", params: { id }, search: { handoff: undefined } });
         }}
         className="mt-6 w-full rounded-xl btn-cta font-bold py-4 flex items-center justify-center gap-2 cta-glow"
       >

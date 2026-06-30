@@ -27,12 +27,12 @@ const CHECK_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000;
 export const runProactiveAgentCheck = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<{ ran: boolean; newCount: number; newItems: AgentActivity[]; activities: AgentActivity[] }> => {
-    const { supabase, user } = context;
+    const { supabase, userId } = context;
 
     const { data: existing } = await supabase
       .from("agent_activity")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -42,7 +42,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
     const { data: providers } = await supabase
       .from("user_providers")
       .select("id, provider_name, category, monthly_price, expiry_date")
-      .eq("user_id", user.id);
+      .eq("user_id", userId);
 
     const rows = providers || [];
     const now = new Date().toISOString();
@@ -51,7 +51,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
 
     if (runFullScan) {
       inserts.push({
-        user_id: user.id,
+        user_id: userId,
         activity_type: "scheduled_scan",
         summary: `בדיקה שבועית — ${rows.length} ספקים`,
         details: { provider_count: rows.length },
@@ -73,7 +73,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
           if (!dup) {
             const save = Math.round((price - benchmark) * 12);
             inserts.push({
-              user_id: user.id,
+              user_id: userId,
               activity_type: "better_offer_found",
               user_provider_id: p.id,
               summary: `נמצאה הצעה טובה יותר ל${p.provider_name} — חיסכון פוטנציאלי ₪${save}/שנה`,
@@ -95,7 +95,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
           );
           if (!dup) {
             inserts.push({
-              user_id: user.id,
+              user_id: userId,
               activity_type: "expiry_alert",
               user_provider_id: p.id,
               summary: `ההסכם עם ${p.provider_name} פג תוך ${daysLeft} ימים`,
@@ -119,7 +119,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
         );
         if (!dup) {
           inserts.push({
-            user_id: user.id,
+            user_id: userId,
             activity_type: "promotion_alert",
             user_provider_id: p.id,
             summary: `מבצע רלוונטי ב${p.category}: ${promo.title}`,
@@ -153,7 +153,7 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
     const { data: all } = await supabase
       .from("agent_activity")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(100);
 
@@ -168,11 +168,11 @@ export const runProactiveAgentCheck = createServerFn({ method: "POST" })
 export const listAgentActivities = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<AgentActivity[]> => {
-    const { supabase, user } = context;
+    const { supabase, userId } = context;
     const { data } = await supabase
       .from("agent_activity")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(100);
     return (data as AgentActivity[]) || [];

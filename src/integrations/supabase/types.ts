@@ -436,6 +436,123 @@ export type Database = {
           },
         ]
       }
+      agent_activity: {
+        Row: {
+          id: string
+          user_id: string
+          activity_type: string
+          user_provider_id: string | null
+          summary: string
+          details: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          activity_type: string
+          user_provider_id?: string | null
+          summary: string
+          details: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          activity_type?: string
+          user_provider_id?: string | null
+          summary?: string
+          details?: Json
+          created_at?: string
+        }
+        Relationships: []
+      }
+      action_confirmations: {
+        Row: {
+          id: string
+          user_id: string
+          negotiation_id: string | null
+          action_type: string
+          provider_name: string
+          plan_name: string
+          monthly_price: number
+          contact_email: string | null
+          contact_phone: string | null
+          rollback: Json
+          status: string
+          expires_at: string
+          created_at: string
+          protocol_sent_at: string | null
+          resolved_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          negotiation_id?: string | null
+          action_type: string
+          provider_name: string
+          plan_name: string
+          monthly_price: number
+          contact_email?: string | null
+          contact_phone?: string | null
+          rollback: Json
+          status?: string
+          expires_at: string
+          created_at?: string
+          protocol_sent_at?: string | null
+          resolved_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          negotiation_id?: string | null
+          action_type?: string
+          provider_name?: string
+          plan_name?: string
+          monthly_price?: number
+          contact_email?: string | null
+          contact_phone?: string | null
+          rollback?: Json
+          status?: string
+          expires_at?: string
+          created_at?: string
+          protocol_sent_at?: string | null
+          resolved_at?: string | null
+        }
+        Relationships: []
+      }
+      action_confirmation_messages: {
+        Row: {
+          id: string
+          confirmation_id: string
+          user_id: string
+          channel: string
+          subject: string | null
+          body: string
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          confirmation_id: string
+          user_id: string
+          channel: string
+          subject?: string | null
+          body: string
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          confirmation_id?: string
+          user_id?: string
+          channel?: string
+          subject?: string | null
+          body?: string
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       webauthn_challenges: {
         Row: {
           challenge: string
