@@ -109,9 +109,15 @@ function Auth() {
   return (
     <div
       className="w-full bg-background"
-      style={{ minHeight: "100dvh", overflowY: "auto", WebkitOverflowScrolling: "touch" }}
+      style={{
+        minHeight: "100dvh",
+        overflowY: "auto",
+        WebkitOverflowScrolling: "touch",
+        paddingTop: "env(safe-area-inset-top, 0px)",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+      }}
     >
-      <div className="flex flex-col px-6 py-10 max-w-sm mx-auto">
+      <div className="flex flex-col px-5 py-10 w-full max-w-sm mx-auto sm:px-6">
 
         {/* Logo + headline */}
         <div className="flex flex-col items-center text-center mb-8">
@@ -128,7 +134,7 @@ function Auth() {
               key={m}
               type="button"
               onClick={() => setMode(m)}
-              className="flex-1 py-2.5 text-sm font-semibold transition-colors"
+              className="flex-1 min-h-[44px] flex items-center justify-center text-sm font-semibold transition-colors"
               style={
                 mode === m
                   ? { background: "var(--primary)", color: "var(--primary-foreground)" }
@@ -196,7 +202,8 @@ function Auth() {
               value={email}
               onChange={(e) => setEmail(e.target.value.trim())}
               placeholder="your@email.com"
-              className="w-full min-h-11 rounded-2xl px-4 text-sm bg-secondary border border-border text-white outline-none focus:border-primary"
+              className="w-full min-h-[44px] rounded-2xl px-4 text-sm bg-secondary border border-border text-white outline-none focus:border-primary"
+              style={{ fontSize: 16 }}
             />
           </div>
 
@@ -208,7 +215,8 @@ function Auth() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full min-h-11 rounded-2xl px-4 text-sm bg-secondary border border-border text-white outline-none focus:border-primary"
+              className="w-full min-h-[44px] rounded-2xl px-4 text-sm bg-secondary border border-border text-white outline-none focus:border-primary"
+              style={{ fontSize: 16 }}
               onKeyDown={(e) => { if (e.key === "Enter") handleEmailAuth(); }}
             />
           </div>
@@ -218,7 +226,7 @@ function Auth() {
             disabled={busy || oauthBusy !== null}
             aria-busy={busy}
             onClick={handleEmailAuth}
-            className="w-full min-h-11 rounded-2xl font-bold text-sm btn-primary flex items-center justify-center gap-2 mt-1 disabled:opacity-60"
+            className="w-full min-h-[44px] rounded-2xl font-bold text-sm btn-primary flex items-center justify-center gap-2 mt-1 disabled:opacity-60"
           >
             {busy ? (
               <>
@@ -245,7 +253,7 @@ function Auth() {
           type="button"
           disabled={busy || oauthBusy !== null}
           onClick={handleBusinessEntry}
-          className="w-full min-h-11 rounded-xl font-bold text-sm border flex items-center justify-center gap-2 disabled:opacity-60"
+          className="w-full min-h-[44px] rounded-xl font-bold text-sm border flex items-center justify-center gap-2 disabled:opacity-60"
           style={{ borderColor: "var(--teal)", color: "var(--teal)" }}
         >
           כניסה כלקוח עסקי
